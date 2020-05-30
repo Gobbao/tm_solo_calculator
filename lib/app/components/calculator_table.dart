@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app_state.dart';
-import '../models/calculator.dart';
+import '../models/calculators/calculator.dart';
 import 'decorated_table_cell.dart';
 
 class CalculatorTable extends StatelessWidget {
@@ -17,8 +17,8 @@ class CalculatorTable extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          '+${calculator.remainingCost.abs()}',
-          style: calculator.remainingCost < 0 ? style : null,
+          '+${calculator.remainingQuantity.abs()}',
+          style: calculator.remainingQuantity < 0 ? style : null,
         ),
         Text(' ('),
         Text(
@@ -56,7 +56,7 @@ class CalculatorTable extends StatelessWidget {
           .map((calculator) => TableRow(
             children: <Widget>[
               DecoratedTableCell(
-                child: Text(calculator.parameter.capitalizedName)
+                child: Text(calculator.conversionTargetCapitalizedName)
               ),
               DecoratedTableCell(
                 isNumeric: true,

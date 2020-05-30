@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'models/calculator.dart';
+import 'models/calculators/calculator.dart';
+import 'models/calculators/to_parameter_calculator.dart';
+import 'models/calculators/to_resource_calculator.dart';
 import 'models/generation.dart';
-import 'models/resource.dart';
 import 'models/parameter.dart';
+import 'models/resource.dart';
 
 enum ParameterKey {
   ocean,
@@ -15,6 +17,7 @@ enum ResourceKey {
   heat,
   megaCredit,
   plant,
+  energy,
 }
 
 class AppState with ChangeNotifier {
@@ -66,43 +69,86 @@ Map<ResourceKey, Resource> _resources = {
     capitalizedName: 'Heat',
     icon: Icons.wb_sunny,
   ),
+  ResourceKey.energy: Resource(
+    capitalizedName: 'Energy',
+    icon: Icons.flash_on,
+  ),
+};
+
+Map<ParameterKey, Calculator> _megaCreditCalculators = {
+  ParameterKey.ocean: ToParameterCalculator(
+    generation: _generation,
+    resource: _resources[ResourceKey.megaCredit],
+    parameter: _parameters[ParameterKey.ocean],
+    conversionCost: 18,
+  ),
+  ParameterKey.oxygen: ToParameterCalculator(
+    generation: _generation,
+    resource: _resources[ResourceKey.megaCredit],
+    parameter: _parameters[ParameterKey.oxygen],
+    conversionCost: 23,
+  ),
+  ParameterKey.temperature: ToParameterCalculator(
+    generation: _generation,
+    resource: _resources[ResourceKey.megaCredit],
+    parameter: _parameters[ParameterKey.temperature],
+    conversionCost: 14,
+  ),
+};
+
+Map<ParameterKey, Calculator> _plantCalculators = {
+  ParameterKey.oxygen: ToParameterCalculator(
+    generation: _generation,
+    resource: _resources[ResourceKey.plant],
+    parameter: _parameters[ParameterKey.oxygen],
+    conversionCost: 8,
+  ),
+};
+
+Map<ParameterKey, Calculator> _heatCalculators = {
+  ParameterKey.temperature: ToParameterCalculator(
+    generation: _generation,
+    resource: _resources[ResourceKey.heat],
+    parameter: _parameters[ParameterKey.temperature],
+    conversionCost: 8,
+  ),
+};
+
+Map<ParameterKey, Calculator> _energyCalculators = {
+  ParameterKey.temperature: ToResourceCalculator(
+    generation: _generation,
+    resource: _resources[ResourceKey.energy],
+    calculator: _heatCalculators[ParameterKey.temperature],
+    conversionCost: 1,
+    modifiers: {
+      CalculatorModifierTarget.remainingQuantity: List.from([
+        (num value, Calculator calculator) => (
+          calculator.generation.remainingLevels == 0
+            ? -calculator.resource.quantity
+            : value
+        )
+      ]),
+      CalculatorModifierTarget.remainingProduction: List.from([
+        (num value, Calculator calculator) {
+          if (calculator.generation.remainingLevels == 1) {
+            return -calculator.resource.production;
+          }
+
+          return value
+            + calculator.remainingQuantity
+            / (
+              calculator.generation.remainingLevels
+              * (calculator.generation.remainingLevels - 1)
+            );
+        }
+      ]),
+    },
+  ),
 };
 
 Map<ResourceKey, List<Calculator>> _calculators = {
-  ResourceKey.megaCredit: List.from([
-    Calculator(
-      generation: _generation,
-      resource: _resources[ResourceKey.megaCredit],
-      parameter: _parameters[ParameterKey.ocean],
-      conversionCost: 18,
-    ),
-    Calculator(
-      generation: _generation,
-      resource: _resources[ResourceKey.megaCredit],
-      parameter: _parameters[ParameterKey.oxygen],
-      conversionCost: 23,
-    ),
-    Calculator(
-      generation: _generation,
-      resource: _resources[ResourceKey.megaCredit],
-      parameter: _parameters[ParameterKey.temperature],
-      conversionCost: 14,
-    ),
-  ]),
-  ResourceKey.plant: List.from([
-    Calculator(
-      generation: _generation,
-      resource: _resources[ResourceKey.plant],
-      parameter: _parameters[ParameterKey.oxygen],
-      conversionCost: 8,
-    ),
-  ]),
-  ResourceKey.heat: List.from([
-    Calculator(
-      generation: _generation,
-      resource: _resources[ResourceKey.heat],
-      parameter: _parameters[ParameterKey.temperature],
-      conversionCost: 8,
-    ),
-  ]),
+  ResourceKey.megaCredit: List.from(_megaCreditCalculators.values),
+  ResourceKey.plant: List.from(_plantCalculators.values),
+  ResourceKey.heat: List.from(_heatCalculators.values),
+  ResourceKey.energy: List.from(_energyCalculators.values),
 };

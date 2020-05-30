@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/calculator.dart';
+import '../models/calculators/calculator.dart';
 import '../models/resource.dart';
 import 'calculator_table.dart';
 import 'resource_input.dart';
