@@ -56,7 +56,7 @@ class CalculatorTable extends StatelessWidget {
           .map((calculator) => TableRow(
             children: <Widget>[
               DecoratedTableCell(
-                child: Text(calculator.conversionTargetCapitalizedName)
+                child: Text(calculator.targetName)
               ),
               DecoratedTableCell(
                 isNumeric: true,

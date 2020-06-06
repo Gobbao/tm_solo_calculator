@@ -6,32 +6,37 @@ import '../resource.dart';
 import 'calculator.dart';
 
 class ToParameterCalculator extends Calculator {
+  final Generation generation;
+  final Resource resource;
   final Parameter parameter;
+  final int _conversionCost;
 
   ToParameterCalculator({
+    @required this.generation,
+    @required this.resource,
     @required this.parameter,
-    @required Generation generation,
-    @required Resource resource,
     @required int conversionCost,
-    Map<CalculatorModifierTarget, List<CalculatorModifier>> modifiers = const {},
-  })
-    : super(
-      resource: resource,
-      generation: generation,
-      conversionCost: conversionCost,
-      modifiers: modifiers,
-    );
+  }) : _conversionCost = conversionCost;
 
   @override
-  String get conversionTargetCapitalizedName => parameter.capitalizedName;
+  String get targetName => parameter.capitalizedName;
 
   @override
-  int get remainingQuantity {
+  int get conversionCost => _conversionCost;
+
+  @override
+  int get remainingQuantity => (
+    (parameter.remainingLevels * conversionCost - resource.quantity)
+    .ceil()
+  );
+
+  @override
+  int get remainingProduction {
+    if (generation.isLastLevel) return -resource.production;
+    if (remainingQuantity <= 0) return -resource.production;
+
     return
-      applyModifiersFor(
-        CalculatorModifierTarget.remainingQuantity,
-        parameter.remainingLevels * conversionCost - resource.quantity,
-      )
+      (remainingQuantity / generation.remainingLevels - resource.production)
       .ceil();
   }
 }

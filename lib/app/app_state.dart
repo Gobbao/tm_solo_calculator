@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'models/calculators/calculator.dart';
 import 'models/calculators/to_parameter_calculator.dart';
-import 'models/calculators/to_resource_calculator.dart';
 import 'models/generation.dart';
 import 'models/parameter.dart';
 import 'models/resource.dart';
@@ -115,34 +114,11 @@ Map<ParameterKey, Calculator> _heatCalculators = {
 };
 
 Map<ParameterKey, Calculator> _energyCalculators = {
-  ParameterKey.temperature: ToResourceCalculator(
+  ParameterKey.temperature: ToParameterCalculator(
     generation: _generation,
     resource: _resources[ResourceKey.energy],
-    calculator: _heatCalculators[ParameterKey.temperature],
-    conversionCost: 1,
-    modifiers: {
-      CalculatorModifierTarget.remainingQuantity: List.from([
-        (num value, Calculator calculator) => (
-          calculator.generation.remainingLevels == 0
-            ? -calculator.resource.quantity
-            : value
-        )
-      ]),
-      CalculatorModifierTarget.remainingProduction: List.from([
-        (num value, Calculator calculator) {
-          if (calculator.generation.remainingLevels == 1) {
-            return -calculator.resource.production;
-          }
-
-          return value
-            + calculator.remainingQuantity
-            / (
-              calculator.generation.remainingLevels
-              * (calculator.generation.remainingLevels - 1)
-            );
-        }
-      ]),
-    },
+    parameter: _parameters[ParameterKey.temperature],
+    conversionCost: 8,
   ),
 };
 

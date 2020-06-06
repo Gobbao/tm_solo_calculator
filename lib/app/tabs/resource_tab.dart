@@ -12,6 +12,7 @@ class ResourceTab extends StatelessWidget {
     return ListView(
       children: state.resources.keys
         .map((resourceKey) => ResourceCard(
+          resource: state.resources[resourceKey],
           calculators: state.calculatorsGroupedByResource[resourceKey],
         ))
         .toList(),
