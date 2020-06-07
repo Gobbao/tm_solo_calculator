@@ -4,6 +4,10 @@ import 'models/calculators/calculator.dart';
 import 'models/calculators/to_parameter_calculator.dart';
 import 'models/generation.dart';
 import 'models/parameter.dart';
+import 'models/resources/energy.dart';
+import 'models/resources/heat.dart';
+import 'models/resources/mega_credit.dart';
+import 'models/resources/plant.dart';
 import 'models/resources/resource.dart';
 
 enum ParameterKey {
@@ -55,23 +59,10 @@ Map<ParameterKey, Parameter> _parameters = {
 };
 
 Map<ResourceKey, Resource> _resources = {
-  ResourceKey.megaCredit: Resource(
-    capitalizedName: 'Mega credit',
-    icon: Icons.attach_money,
-    minProduction: -5,
-  ),
-  ResourceKey.plant: Resource(
-    capitalizedName: 'Plant',
-    icon: Icons.local_florist,
-  ),
-  ResourceKey.heat: Resource(
-    capitalizedName: 'Heat',
-    icon: Icons.wb_sunny,
-  ),
-  ResourceKey.energy: Resource(
-    capitalizedName: 'Energy',
-    icon: Icons.flash_on,
-  ),
+  ResourceKey.megaCredit: megaCredit,
+  ResourceKey.plant: plant,
+  ResourceKey.heat: heat,
+  ResourceKey.energy: energy,
 };
 
 Map<ParameterKey, Calculator> _megaCreditCalculators = {
