@@ -4,7 +4,7 @@ import 'models/calculators/calculator.dart';
 import 'models/calculators/to_parameter_calculator.dart';
 import 'models/generation.dart';
 import 'models/parameter.dart';
-import 'models/resource.dart';
+import 'models/resources/resource.dart';
 
 enum ParameterKey {
   ocean,

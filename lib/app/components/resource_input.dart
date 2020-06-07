@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../app_state.dart';
-import '../models/resource.dart';
+import '../models/resources/resource.dart';
 import 'resource_icon.dart';
 
 class ResourceInput extends StatefulWidget {

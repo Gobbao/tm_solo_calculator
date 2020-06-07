@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../generation.dart';
 import '../parameter.dart';
-import '../resource.dart';
+import '../resources/resource.dart';
 import 'calculator.dart';
 
 class ToParameterCalculator extends Calculator {
