@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../resources/converters/handler.dart';
 import '../generation.dart';
 import '../parameter.dart';
 import '../resources/resource.dart';
@@ -25,10 +26,13 @@ class ToParameterCalculator extends Calculator {
   int get conversionCost => _conversionCost;
 
   @override
-  int get remainingQuantity => (
-    (parameter.remainingLevels * conversionCost - resource.quantity)
-    .ceil()
-  );
+  int get remainingQuantity {
+    final equivalentQuantity = ResourceConverterHandler.sumQuantityByTarget(resource);
+
+    return
+      (parameter.remainingLevels * conversionCost - resource.quantity - equivalentQuantity)
+      .ceil();
+  }
 
   @override
   int get remainingProduction {

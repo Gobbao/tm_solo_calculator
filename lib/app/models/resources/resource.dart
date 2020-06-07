@@ -15,6 +15,23 @@ class Resource {
   })
     : _minProduction = minProduction;
 
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + capitalizedName.hashCode;
+
+    return result;
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! Resource) return false;
+
+    Resource resource = other;
+
+    return resource.capitalizedName == capitalizedName;
+  }
+
   int get quantity => _quantity;
 
   set quantity(int value) {
