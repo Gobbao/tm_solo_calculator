@@ -5,11 +5,11 @@ import '../resource.dart';
 class ResourceConverter {
   final Resource fromResource;
   final Resource toResource;
-  final int bonus;
+  final int Function() getBonus;
 
   ResourceConverter({
     @required this.fromResource,
     @required this.toResource,
-    @required this.bonus,
+    @required this.getBonus,
   });
 }
