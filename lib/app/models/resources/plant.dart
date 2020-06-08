@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'resource.dart';
 
-final plant = Resource(
-  capitalizedName: 'Plant',
-  icon: Icons.local_florist,
-);
+final Plant plant = Plant._();
+
+class Plant extends Resource {
+  Plant._() : super(
+    capitalizedName: 'Plant',
+    icon: Icons.local_florist,
+  );
+}
