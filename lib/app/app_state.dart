@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'models/calculators/calculator.dart';
 import 'models/calculators/to_parameter_calculator.dart';
 import 'models/parameters/generation.dart' as GenerationParameter;
+import 'models/parameters/ocean.dart';
+import 'models/parameters/oxygen.dart';
 import 'models/parameters/parameter.dart';
+import 'models/parameters/temperature.dart';
 import 'models/resources/energy.dart';
 import 'models/resources/heat.dart';
 import 'models/resources/mega_credit.dart';
@@ -35,25 +38,9 @@ class AppState with ChangeNotifier {
 }
 
 Map<ParameterKey, Parameter> _parameters = {
-  ParameterKey.ocean: Parameter(
-    capitalizedName: 'Ocean',
-    initialLevel: 0,
-    totalLevels: 9,
-  ),
-  ParameterKey.oxygen: Parameter(
-    capitalizedName: 'Oxygen',
-    measureUnit: '%',
-    initialLevel: 0,
-    totalLevels: 14,
-  ),
-  ParameterKey.temperature: Parameter(
-    capitalizedName: 'Temperature',
-    measureUnit: '°C',
-    initialLevel: -30,
-    totalLevels: 19,
-    levelMultiplier: 2,
-    enablePlusSignalOnFormatting: true,
-  ),
+  ParameterKey.ocean: ocean,
+  ParameterKey.oxygen: oxygen,
+  ParameterKey.temperature: temperature,
 };
 
 Map<ResourceKey, Resource> _resources = {
