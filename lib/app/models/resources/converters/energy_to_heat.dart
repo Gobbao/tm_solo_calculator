@@ -1,4 +1,4 @@
-import '../../generation.dart';
+import '../../parameters/generation.dart';
 import '../energy.dart';
 import '../heat.dart';
 import 'converter.dart';

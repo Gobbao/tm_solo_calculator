@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'models/calculators/calculator.dart';
 import 'models/calculators/to_parameter_calculator.dart';
-import 'models/generation.dart' as GenerationParameter;
-import 'models/parameter.dart';
+import 'models/parameters/generation.dart' as GenerationParameter;
+import 'models/parameters/parameter.dart';
 import 'models/resources/energy.dart';
 import 'models/resources/heat.dart';
 import 'models/resources/mega_credit.dart';

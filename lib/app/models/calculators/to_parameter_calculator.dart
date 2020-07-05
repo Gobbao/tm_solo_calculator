@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../resources/converters/handler.dart';
-import '../generation.dart';
-import '../parameter.dart';
+import '../parameters/generation.dart';
+import '../parameters/parameter.dart';
 import '../resources/resource.dart';
 import 'calculator.dart';
 
