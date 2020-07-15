@@ -12,6 +12,7 @@ import 'models/resources/heat.dart';
 import 'models/resources/mega_credit.dart';
 import 'models/resources/plant.dart';
 import 'models/resources/resource.dart';
+import 'state/converter.dart';
 
 enum ParameterKey {
   ocean,
@@ -30,7 +31,28 @@ class AppState with ChangeNotifier {
   final GenerationParameter.Generation generation = GenerationParameter.generation;
   final Map<ParameterKey, Parameter> parameters = _parameters;
   final Map<ResourceKey, Resource> resources = _resources;
-  final Map<ResourceKey, List<Calculator>> calculatorsGroupedByResource = _calculators;
+  // TODO: improve this. Use Resource as key instead of ResourceKey.
+  final Map<ResourceKey, List<Calculator>> calculatorsGroupedByResource =
+    ConverterState()
+      .generateCalculators()
+      .fold(Map(), (previousValue, element) {
+        final resourceName = element.resource.capitalizedName;
+        final resourceKey = resourceName == 'Mega credit'
+          ? ResourceKey.megaCredit
+          : resourceName == 'Plant'
+            ? ResourceKey.plant
+            : resourceName == 'Heat'
+              ? ResourceKey.heat
+              : ResourceKey.energy;
+
+        previousValue.update(
+          resourceKey,
+          (value) => value.followedBy([element]).toList(),
+          ifAbsent: () => List.from([element]),
+        );
+
+        return previousValue;
+      });
 
   void notifyUpdate() {
     notifyListeners();
@@ -98,6 +120,7 @@ Map<ParameterKey, Calculator> _energyCalculators = {
   ),
 };
 
+// TODO: remove this and related stuff
 Map<ResourceKey, List<Calculator>> _calculators = {
   ResourceKey.megaCredit: List.from(_megaCreditCalculators.values),
   ResourceKey.plant: List.from(_plantCalculators.values),
