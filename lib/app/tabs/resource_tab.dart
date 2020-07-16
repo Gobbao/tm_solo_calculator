@@ -10,10 +10,10 @@ class ResourceTab extends StatelessWidget {
     final state = Provider.of<AppState>(context, listen: false);
 
     return ListView(
-      children: state.resources.keys
-        .map((resourceKey) => ResourceCard(
-          resource: state.resources[resourceKey],
-          calculators: state.calculatorsGroupedByResource[resourceKey],
+      children: state.calculatorsGroupedByResource.entries
+        .map((entry) => ResourceCard(
+          resource: entry.key,
+          calculators: entry.value,
         ))
         .toList(),
     );
