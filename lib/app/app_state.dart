@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'models/calculators/calculator.dart';
-import 'models/calculators/to_parameter_calculator.dart';
 import 'models/parameters/generation.dart' as GenerationParameter;
 import 'models/parameters/ocean.dart';
 import 'models/parameters/oxygen.dart';
@@ -30,6 +29,7 @@ enum ResourceKey {
 class AppState with ChangeNotifier {
   final GenerationParameter.Generation generation = GenerationParameter.generation;
   final Map<ParameterKey, Parameter> parameters = _parameters;
+  // TODO: use Resource as key instead of ResourceKey. Transform into list?
   final Map<ResourceKey, Resource> resources = _resources;
   // TODO: improve this. Use Resource as key instead of ResourceKey.
   final Map<ResourceKey, List<Calculator>> calculatorsGroupedByResource =
@@ -70,60 +70,4 @@ Map<ResourceKey, Resource> _resources = {
   ResourceKey.plant: plant,
   ResourceKey.heat: heat,
   ResourceKey.energy: energy,
-};
-
-Map<ParameterKey, Calculator> _megaCreditCalculators = {
-  ParameterKey.ocean: ToParameterCalculator(
-    generation: GenerationParameter.generation,
-    resource: _resources[ResourceKey.megaCredit],
-    parameter: _parameters[ParameterKey.ocean],
-    conversionCost: 18,
-  ),
-  ParameterKey.oxygen: ToParameterCalculator(
-    generation: GenerationParameter.generation,
-    resource: _resources[ResourceKey.megaCredit],
-    parameter: _parameters[ParameterKey.oxygen],
-    conversionCost: 23,
-  ),
-  ParameterKey.temperature: ToParameterCalculator(
-    generation: GenerationParameter.generation,
-    resource: _resources[ResourceKey.megaCredit],
-    parameter: _parameters[ParameterKey.temperature],
-    conversionCost: 14,
-  ),
-};
-
-Map<ParameterKey, Calculator> _plantCalculators = {
-  ParameterKey.oxygen: ToParameterCalculator(
-    generation: GenerationParameter.generation,
-    resource: _resources[ResourceKey.plant],
-    parameter: _parameters[ParameterKey.oxygen],
-    conversionCost: 8,
-  ),
-};
-
-Map<ParameterKey, Calculator> _heatCalculators = {
-  ParameterKey.temperature: ToParameterCalculator(
-    generation: GenerationParameter.generation,
-    resource: _resources[ResourceKey.heat],
-    parameter: _parameters[ParameterKey.temperature],
-    conversionCost: 8,
-  ),
-};
-
-Map<ParameterKey, Calculator> _energyCalculators = {
-  ParameterKey.temperature: ToParameterCalculator(
-    generation: GenerationParameter.generation,
-    resource: _resources[ResourceKey.energy],
-    parameter: _parameters[ParameterKey.temperature],
-    conversionCost: 8,
-  ),
-};
-
-// TODO: remove this and related stuff
-Map<ResourceKey, List<Calculator>> _calculators = {
-  ResourceKey.megaCredit: List.from(_megaCreditCalculators.values),
-  ResourceKey.plant: List.from(_plantCalculators.values),
-  ResourceKey.heat: List.from(_heatCalculators.values),
-  ResourceKey.energy: List.from(_energyCalculators.values),
 };
