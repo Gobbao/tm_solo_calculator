@@ -52,6 +52,8 @@ class NewCalculator extends Calculator {
 
   @override
   int get remainingQuantity {
+    if (_converter.to.isLastLevel) return -resource.quantity;
+
     final necessaryQuantity = _converter.to.remainingLevels * _converter.cost;
     final equivalentQuantity = _resourceTree
       .reversed
