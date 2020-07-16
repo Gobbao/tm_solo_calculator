@@ -10,9 +10,9 @@ class ParameterTab extends StatelessWidget {
     final state = Provider.of<AppState>(context, listen: false);
 
     return ListView(
-      children: List.from([state.generation])
-        .followedBy(state.parameters.values)
-        .map((parameter) => ParameterCard(parameter: parameter)).toList(),
+      children: state.parameters
+        .map((parameter) => ParameterCard(parameter: parameter))
+        .toList(),
     );
   }
 }
