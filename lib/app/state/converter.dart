@@ -1,4 +1,4 @@
-import '../models/calculators/new_calculator.dart';
+import '../models/calculators/calculator.dart';
 import '../models/converter.dart';
 import '../models/graph/directed_graph.dart';
 import '../models/graph/edge.dart';
@@ -35,16 +35,16 @@ class ConverterState {
     _converters[source].update(destination, (_) => cost, ifAbsent: () => cost);
   }
 
-  List<NewCalculator> generateCalculators() {
+  List<Calculator> generateCalculators() {
     final tree = _resourceGraph.findLongestPaths();
-    final calculators = List<NewCalculator>();
+    final calculators = List<Calculator>();
 
     _converters.forEach((resource, converters) {
       final subtree = tree.generateSubtreeFrom(resource);
 
       converters.forEach((parameter, cost) {
         subtree.forEach((element) {
-          calculators.add(NewCalculator(
+          calculators.add(Calculator(
             resource: element.vertex,
             resourceTree: subtree,
             converter: Converter(
