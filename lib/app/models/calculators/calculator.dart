@@ -41,7 +41,7 @@ class Calculator {
     return ((necessaryQuantity - equivalentQuantity) / _bonus).ceil();
   }
 
-  int get remainingProduction {
+  int get missingProduction {
     if (generation.isLastLevel) return -resource.production;
     if (missingQuantity <= 0) return -resource.production;
 

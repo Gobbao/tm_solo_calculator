@@ -22,8 +22,8 @@ class CalculatorTable extends StatelessWidget {
         ),
         Text(' ('),
         Text(
-          '+${calculator.remainingProduction.abs()}',
-          style: calculator.remainingProduction < 0 ? style : null,
+          '+${calculator.missingProduction.abs()}',
+          style: calculator.missingProduction < 0 ? style : null,
         ),
         Text(')'),
       ],
