@@ -28,7 +28,7 @@ class Calculator {
 
   String get targetName => _converter.to.capitalizedName;
 
-  int get remainingQuantity {
+  int get missingQuantity {
     if (_converter.to.isLastLevel) return -resource.quantity;
 
     final necessaryQuantity = _converter.to.remainingLevels * _converter.cost;
@@ -43,10 +43,10 @@ class Calculator {
 
   int get remainingProduction {
     if (generation.isLastLevel) return -resource.production;
-    if (remainingQuantity <= 0) return -resource.production;
+    if (missingQuantity <= 0) return -resource.production;
 
     return
-      (remainingQuantity / generation.remainingLevels - resource.production)
+      (missingQuantity / generation.remainingLevels - resource.production)
       .ceil();
   }
 }

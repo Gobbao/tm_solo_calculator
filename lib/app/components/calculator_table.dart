@@ -17,8 +17,8 @@ class CalculatorTable extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          '+${calculator.remainingQuantity.abs()}',
-          style: calculator.remainingQuantity < 0 ? style : null,
+          '+${calculator.missingQuantity.abs()}',
+          style: calculator.missingQuantity < 0 ? style : null,
         ),
         Text(' ('),
         Text(
