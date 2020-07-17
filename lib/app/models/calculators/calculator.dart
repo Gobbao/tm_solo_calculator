@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 
-import '../parameters/generation.dart';
 import '../converter.dart';
 import '../graph/spanning_tree_element.dart';
+import '../parameters/generation.dart';
 import '../resources/resource.dart';
 
 class Calculator {
   final Resource resource;
+  final int conversionCost;
+  final int _bonus;
   final Converter _converter;
   final List<SpanningTreeElement<Resource>> _resourceTree;
 
@@ -16,35 +18,15 @@ class Calculator {
     @required List<SpanningTreeElement<Resource>> resourceTree,
   })
     : _converter = converter
-    , _resourceTree = resourceTree;
+    , _resourceTree = resourceTree
+    , _bonus = _calculateBonus(tree: resourceTree, resource: resource)
+    , conversionCost = _calculateConversionCost(
+      tree: resourceTree,
+      resource: resource,
+      initialCost: converter.cost.toDouble(),
+    );
 
   String get targetName => _converter.to.capitalizedName;
-
-  // TODO: change to class variable instead of getter
-  int get conversionCost {
-    double cost = _converter.cost.toDouble();
-
-    for (final treeElement in _resourceTree) {
-      if (treeElement.vertex == resource) return cost.ceil();
-
-      cost /= treeElement.weightToParent;
-    }
-
-    return cost.ceil();
-  }
-
-  // TODO: change to class variable instead of getter
-  int get _bonus {
-    int bonus = 1;
-
-    for (final treeElement in _resourceTree) {
-      if (treeElement.vertex == resource) return bonus;
-
-      bonus *= treeElement.weightToParent;
-    }
-
-    return bonus;
-  }
 
   int get remainingQuantity {
     if (_converter.to.isLastLevel) return -resource.quantity;
@@ -67,4 +49,35 @@ class Calculator {
       (remainingQuantity / generation.remainingLevels - resource.production)
       .ceil();
   }
+}
+
+int _calculateBonus({
+  @required List<SpanningTreeElement<Resource>> tree,
+  @required Resource resource,
+}) {
+  int bonus = 1;
+
+  for (final treeElement in tree) {
+    if (treeElement.vertex == resource) return bonus;
+
+    bonus *= treeElement.weightToParent;
+  }
+
+  return bonus;
+}
+
+int _calculateConversionCost({
+  @required List<SpanningTreeElement<Resource>> tree,
+  @required Resource resource,
+  @required double initialCost,
+}) {
+  double cost = initialCost;
+
+  for (final treeElement in tree) {
+    if (treeElement.vertex == resource) return cost.ceil();
+
+    cost /= treeElement.weightToParent;
+  }
+
+  return cost.ceil();
 }
