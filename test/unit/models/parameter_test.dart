@@ -11,56 +11,56 @@ void main() {
 
     test('Should be in initial state', () {
       expect(parameter.capitalizedName, 'Parameter');
-      expect(parameter.initialLevel, 0);
-      expect(parameter.totalLevels, 3);
-      expect(parameter.finalLevel, 3);
-      expect(parameter.measureUnit, null);
-      expect(parameter.currentLevel, 0);
-      expect(parameter.formatedCurrentLevel, '0');
-      expect(parameter.remainingLevels, 3);
-      expect(parameter.isFirstLevel, true);
-      expect(parameter.isLastLevel, false);
+      expect(parameter.initialLevel, isZero);
+      expect(parameter.totalLevels, equals(3));
+      expect(parameter.finalLevel, equals(3));
+      expect(parameter.measureUnit, isNull);
+      expect(parameter.currentLevel, isZero);
+      expect(parameter.formatedCurrentLevel, equals('0'));
+      expect(parameter.remainingLevels, equals(3));
+      expect(parameter.isFirstLevel, isTrue);
+      expect(parameter.isLastLevel, isFalse);
     });
 
     test('Level should not be lower than initial level', () {
       parameter.currentLevel = parameter.initialLevel - 1;
 
-      expect(parameter.currentLevel, parameter.initialLevel);
-      expect(parameter.formatedCurrentLevel, '0');
-      expect(parameter.remainingLevels, 3);
-      expect(parameter.isFirstLevel, true);
-      expect(parameter.isLastLevel, false);
+      expect(parameter.currentLevel, equals(parameter.initialLevel));
+      expect(parameter.formatedCurrentLevel, equals('0'));
+      expect(parameter.remainingLevels, equals(3));
+      expect(parameter.isFirstLevel, isTrue);
+      expect(parameter.isLastLevel, isFalse);
     });
 
     test('Level should be incremented', () {
       parameter.incrementLevel();
       parameter.incrementLevel();
 
-      expect(parameter.currentLevel, 2);
-      expect(parameter.formatedCurrentLevel, '2');
-      expect(parameter.remainingLevels, 1);
-      expect(parameter.isFirstLevel, false);
-      expect(parameter.isLastLevel, false);
+      expect(parameter.currentLevel, equals(2));
+      expect(parameter.formatedCurrentLevel, equals('2'));
+      expect(parameter.remainingLevels, equals(1));
+      expect(parameter.isFirstLevel, isFalse);
+      expect(parameter.isLastLevel, isFalse);
     });
 
     test('Level should be decremented', () {
       parameter.decrementLevel();
 
-      expect(parameter.currentLevel, 1);
-      expect(parameter.formatedCurrentLevel, '1');
-      expect(parameter.remainingLevels, 2);
-      expect(parameter.isFirstLevel, false);
-      expect(parameter.isLastLevel, false);
+      expect(parameter.currentLevel, equals(1));
+      expect(parameter.formatedCurrentLevel, equals('1'));
+      expect(parameter.remainingLevels, equals(2));
+      expect(parameter.isFirstLevel, isFalse);
+      expect(parameter.isLastLevel, isFalse);
     });
 
     test('Level should not be greater than final level', () {
       parameter.currentLevel = parameter.finalLevel + 1;
 
-      expect(parameter.currentLevel, parameter.finalLevel);
-      expect(parameter.formatedCurrentLevel, '3');
-      expect(parameter.remainingLevels, 0);
-      expect(parameter.isFirstLevel, false);
-      expect(parameter.isLastLevel, true);
+      expect(parameter.currentLevel, equals(parameter.finalLevel));
+      expect(parameter.formatedCurrentLevel, equals('3'));
+      expect(parameter.remainingLevels, isZero);
+      expect(parameter.isFirstLevel, isFalse);
+      expect(parameter.isLastLevel, isTrue);
     });
 
     test('Should consider level multiplier', () {
@@ -71,15 +71,15 @@ void main() {
         levelMultiplier: 3,
       );
 
-      expect(_parameter.initialLevel, 1);
-      expect(_parameter.finalLevel, 7);
-      expect(_parameter.currentLevel, 1);
+      expect(_parameter.initialLevel, equals(1));
+      expect(_parameter.finalLevel, equals(7));
+      expect(_parameter.currentLevel, equals(1));
 
       _parameter.incrementLevel();
-      expect(_parameter.currentLevel, 4);
+      expect(_parameter.currentLevel, equals(4));
 
       _parameter.incrementLevel();
-      expect(_parameter.currentLevel, 7);
+      expect(_parameter.currentLevel, equals(7));
     });
 
     test('Should consider measure unit', () {
@@ -90,10 +90,10 @@ void main() {
         totalLevels: 3,
       );
 
-      expect(_parameter.formatedCurrentLevel, '0 %');
+      expect(_parameter.formatedCurrentLevel, equals('0 %'));
 
       _parameter.incrementLevel();
-      expect(_parameter.formatedCurrentLevel, '1 %');
+      expect(_parameter.formatedCurrentLevel, equals('1 %'));
     });
 
     test('Should consider plus signal', () {
@@ -104,10 +104,10 @@ void main() {
         totalLevels: 3,
       );
 
-      expect(_parameter.formatedCurrentLevel, '0');
+      expect(_parameter.formatedCurrentLevel, equals('0'));
 
       _parameter.incrementLevel();
-      expect(_parameter.formatedCurrentLevel, '+1');
+      expect(_parameter.formatedCurrentLevel, equals('+1'));
     });
 
     test('Should consider measure unit and plus signal', () {
@@ -119,10 +119,10 @@ void main() {
         totalLevels: 3,
       );
 
-      expect(_parameter.formatedCurrentLevel, '0 %');
+      expect(_parameter.formatedCurrentLevel, equals('0 %'));
 
       _parameter.incrementLevel();
-      expect(_parameter.formatedCurrentLevel, '+1 %');
+      expect(_parameter.formatedCurrentLevel, equals('+1 %'));
     });
   });
 }
