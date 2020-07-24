@@ -8,15 +8,15 @@ void main() {
     final converter = Converter(from: heat, to: temperature, cost: 8);
 
     test('Should contain resource', () {
-      expect(converter.from, heat);
+      expect(converter.from, equals(heat));
     });
 
     test('Should contain parameter', () {
-      expect(converter.to, temperature);
+      expect(converter.to, equals(temperature));
     });
 
     test('Should contain cost', () {
-      expect(converter.cost, 8);
+      expect(converter.cost, equals(8));
     });
   });
 }
