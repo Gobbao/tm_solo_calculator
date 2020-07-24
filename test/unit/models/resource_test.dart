@@ -12,36 +12,36 @@ void main() {
 
     test('Should be in initial state', () {
       expect(resource.capitalizedName, 'Resource');
-      expect(resource.quantity, 0);
-      expect(resource.production, 0);
+      expect(resource.quantity, isZero);
+      expect(resource.production, isZero);
     });
 
     test('Quantity should not be lower than 0', () {
       resource.quantity = -1;
 
-      expect(resource.quantity, 0);
-      expect(resource.production, 0);
+      expect(resource.quantity, isZero);
+      expect(resource.production, isZero);
     });
 
     test('Quantity should be changed', () {
       resource.quantity = 8;
 
-      expect(resource.quantity, 8);
-      expect(resource.production, 0);
+      expect(resource.quantity, equals(8));
+      expect(resource.production, isZero);
     });
 
     test('Production should not be lower than minimal production', () {
       resource.production = -3;
 
-      expect(resource.quantity, 8);
-      expect(resource.production, -2);
+      expect(resource.quantity, equals(8));
+      expect(resource.production, equals(-2));
     });
 
     test('Production should be changed', () {
       resource.production = 4;
 
-      expect(resource.quantity, 8);
-      expect(resource.production, 4);
+      expect(resource.quantity, equals(8));
+      expect(resource.production, equals(4));
     });
 
     test('Custom hash code should be equal by capitalizedName', () {
@@ -50,8 +50,8 @@ void main() {
         icon: resource.icon,
       );
 
-      expect(_resource, resource);
-      expect(resource, _resource);
+      expect(_resource, equals(resource));
+      expect(resource, equals(_resource));
     });
 
     test('Custom hash code should be different by capitalizedName', () {
