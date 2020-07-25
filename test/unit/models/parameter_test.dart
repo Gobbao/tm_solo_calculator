@@ -10,7 +10,7 @@ void main() {
     );
 
     test('Should be in initial state', () {
-      expect(parameter.capitalizedName, 'Parameter');
+      expect(parameter.capitalizedName, equals('Parameter'));
       expect(parameter.initialLevel, isZero);
       expect(parameter.totalLevels, equals(3));
       expect(parameter.finalLevel, equals(3));
