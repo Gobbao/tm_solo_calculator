@@ -36,33 +36,34 @@ void main() {
 
       expect(tree, hasLength(4));
       expect(
-          tree,
-          containsAll([
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('A'),
-              'parent': isNull,
-              'cost': isZero,
-              'weightToParent': isNull,
-            })),
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('B'),
-              'parent': equals('C'),
-              'cost': equals(4),
-              'weightToParent': equals(1),
-            })),
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('C'),
-              'parent': equals('A'),
-              'cost': equals(3),
-              'weightToParent': equals(3),
-            })),
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('D'),
-              'parent': equals('B'),
-              'cost': equals(5),
-              'weightToParent': equals(1),
-            })),
-          ]));
+        tree,
+        containsAll([
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('A'),
+            'parent': isNull,
+            'cost': isZero,
+            'weightToParent': isNull,
+          })),
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('B'),
+            'parent': equals('C'),
+            'cost': equals(4),
+            'weightToParent': equals(1),
+          })),
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('C'),
+            'parent': equals('A'),
+            'cost': equals(3),
+            'weightToParent': equals(3),
+          })),
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('D'),
+            'parent': equals('B'),
+            'cost': equals(5),
+            'weightToParent': equals(1),
+          })),
+        ]),
+      );
     });
   });
 }

@@ -28,27 +28,28 @@ void main() {
 
       expect(tree, hasLength(3));
       expect(
-          tree,
-          containsAll([
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('A'),
-              'parent': isNull,
-              'cost': isZero,
-              'weightToParent': isNull,
-            })),
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('B'),
-              'parent': equals('A'),
-              'cost': equals(4),
-              'weightToParent': equals(4),
-            })),
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('C'),
-              'parent': equals('B'),
-              'cost': equals(12),
-              'weightToParent': equals(8),
-            })),
-          ]));
+        tree,
+        containsAll([
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('A'),
+            'parent': isNull,
+            'cost': isZero,
+            'weightToParent': isNull,
+          })),
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('B'),
+            'parent': equals('A'),
+            'cost': equals(4),
+            'weightToParent': equals(4),
+          })),
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('C'),
+            'parent': equals('B'),
+            'cost': equals(12),
+            'weightToParent': equals(8),
+          })),
+        ]),
+      );
     });
 
     test('Should generate subtree correctly', () {
@@ -56,21 +57,22 @@ void main() {
 
       expect(subtree, hasLength(2));
       expect(
-          subtree,
-          containsAllInOrder([
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('B'),
-              'parent': equals('A'),
-              'cost': equals(4),
-              'weightToParent': equals(4),
-            })),
-            SpanningTreeElementMatcher(equals({
-              'vertex': equals('A'),
-              'parent': isNull,
-              'cost': isZero,
-              'weightToParent': isNull,
-            })),
-          ]));
+        subtree,
+        containsAllInOrder([
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('B'),
+            'parent': equals('A'),
+            'cost': equals(4),
+            'weightToParent': equals(4),
+          })),
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('A'),
+            'parent': isNull,
+            'cost': isZero,
+            'weightToParent': isNull,
+          })),
+        ]),
+      );
     });
   });
 }
