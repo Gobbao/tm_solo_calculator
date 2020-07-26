@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tm_solo_calculator/app/models/graph/spanning_tree.dart';
 
+import '../../../matchers/spanning_tree_element.dart';
+
 void main() {
   group('Depth First Search', () {
     final spanningTree = SpanningTree(
@@ -24,38 +26,51 @@ void main() {
     test('Should generate spanning tree correctly', () {
       final tree = spanningTree.tree;
 
-      expect(tree.length, equals(3));
-
-      expect(tree[0].vertex, equals('A'));
-      expect(tree[0].parent, isNull);
-      expect(tree[0].cost, isZero);
-      expect(tree[0].weightToParent, isNull);
-
-      expect(tree[1].vertex, equals('B'));
-      expect(tree[1].parent, equals('A'));
-      expect(tree[1].cost, equals(4));
-      expect(tree[1].weightToParent, equals(4));
-
-      expect(tree[2].vertex, equals('C'));
-      expect(tree[2].parent, equals('B'));
-      expect(tree[2].cost, equals(12));
-      expect(tree[2].weightToParent, equals(8));
+      expect(tree, hasLength(3));
+      expect(
+          tree,
+          containsAll([
+            SpanningTreeElementMatcher(equals({
+              'vertex': equals('A'),
+              'parent': isNull,
+              'cost': isZero,
+              'weightToParent': isNull,
+            })),
+            SpanningTreeElementMatcher(equals({
+              'vertex': equals('B'),
+              'parent': equals('A'),
+              'cost': equals(4),
+              'weightToParent': equals(4),
+            })),
+            SpanningTreeElementMatcher(equals({
+              'vertex': equals('C'),
+              'parent': equals('B'),
+              'cost': equals(12),
+              'weightToParent': equals(8),
+            })),
+          ]));
     });
 
     test('Should generate subtree correctly', () {
       final subtree = spanningTree.generateSubtreeFrom('B');
 
-      expect(subtree.length, equals(2));
-
-      expect(subtree[0].vertex, equals('B'));
-      expect(subtree[0].parent, equals('A'));
-      expect(subtree[0].cost, equals(4));
-      expect(subtree[0].weightToParent, equals(4));
-
-      expect(subtree[1].vertex, equals('A'));
-      expect(subtree[1].parent, isNull);
-      expect(subtree[1].cost, isZero);
-      expect(subtree[1].weightToParent, isNull);
+      expect(subtree, hasLength(2));
+      expect(
+          subtree,
+          containsAllInOrder([
+            SpanningTreeElementMatcher(equals({
+              'vertex': equals('B'),
+              'parent': equals('A'),
+              'cost': equals(4),
+              'weightToParent': equals(4),
+            })),
+            SpanningTreeElementMatcher(equals({
+              'vertex': equals('A'),
+              'parent': isNull,
+              'cost': isZero,
+              'weightToParent': isNull,
+            })),
+          ]));
     });
   });
 }
