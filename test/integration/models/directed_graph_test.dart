@@ -20,14 +20,12 @@ void main() {
         ..addEdge(edgeCToB)
         ..addEdge(edgeBToD);
 
-      expect(
-          graph.adjacencyList,
-          equals({
-            'A': [edgeAToB, edgeAToC],
-            'B': [edgeBToD],
-            'C': [edgeCToB],
-            'D': [],
-          }));
+      expect(graph.adjacencyList, equals({
+        'A': [edgeAToB, edgeAToC],
+        'B': [edgeBToD],
+        'C': [edgeCToB],
+        'D': [],
+      }));
     });
 
     test('Should generate longest paths', () {
