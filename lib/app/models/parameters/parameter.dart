@@ -49,7 +49,7 @@ class Parameter {
     return formated;
   }
 
-  int get remainingLevels {
+  int get missingLevels {
     return totalLevels - _currentLevel;
   }
 

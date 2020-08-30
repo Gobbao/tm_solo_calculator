@@ -42,7 +42,7 @@ class Calculator {
   int get missingQuantity {
     if (_shouldSkipQuantity) return -resource.quantity;
 
-    final necessaryQuantity = _converter.to.remainingLevels * _converter.cost;
+    final necessaryQuantity = _converter.to.missingLevels * _converter.cost;
     final equivalentQuantity = _resourceTree.tree
       .reversed
       .fold<int>(0, (previousValue, element) {
@@ -71,7 +71,7 @@ class Calculator {
     if (_shouldSkipProduction) return -resource.production;
 
     return
-      (missingQuantity / generation.remainingLevels - resource.production)
+      (missingQuantity / generation.missingLevels - resource.production)
       .ceil();
   }
 }

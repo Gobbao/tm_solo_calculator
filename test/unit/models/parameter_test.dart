@@ -17,7 +17,7 @@ void main() {
       expect(parameter.measureUnit, isNull);
       expect(parameter.currentLevel, isZero);
       expect(parameter.formatedCurrentLevel, equals('0'));
-      expect(parameter.remainingLevels, equals(3));
+      expect(parameter.missingLevels, equals(3));
       expect(parameter.isFirstLevel, isTrue);
       expect(parameter.isLastLevel, isFalse);
     });
@@ -27,7 +27,7 @@ void main() {
 
       expect(parameter.currentLevel, equals(parameter.initialLevel));
       expect(parameter.formatedCurrentLevel, equals('0'));
-      expect(parameter.remainingLevels, equals(3));
+      expect(parameter.missingLevels, equals(3));
       expect(parameter.isFirstLevel, isTrue);
       expect(parameter.isLastLevel, isFalse);
     });
@@ -38,7 +38,7 @@ void main() {
 
       expect(parameter.currentLevel, equals(2));
       expect(parameter.formatedCurrentLevel, equals('2'));
-      expect(parameter.remainingLevels, equals(1));
+      expect(parameter.missingLevels, equals(1));
       expect(parameter.isFirstLevel, isFalse);
       expect(parameter.isLastLevel, isFalse);
     });
@@ -48,7 +48,7 @@ void main() {
 
       expect(parameter.currentLevel, equals(1));
       expect(parameter.formatedCurrentLevel, equals('1'));
-      expect(parameter.remainingLevels, equals(2));
+      expect(parameter.missingLevels, equals(2));
       expect(parameter.isFirstLevel, isFalse);
       expect(parameter.isLastLevel, isFalse);
     });
@@ -58,7 +58,7 @@ void main() {
 
       expect(parameter.currentLevel, equals(parameter.finalLevel));
       expect(parameter.formatedCurrentLevel, equals('3'));
-      expect(parameter.remainingLevels, isZero);
+      expect(parameter.missingLevels, isZero);
       expect(parameter.isFirstLevel, isFalse);
       expect(parameter.isLastLevel, isTrue);
     });
