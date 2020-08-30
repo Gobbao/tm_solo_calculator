@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Parameter {
   final String capitalizedName;
   final String measureUnit;
@@ -10,10 +12,10 @@ class Parameter {
   int _currentLevel = 0;
 
   Parameter({
-    this.capitalizedName,
+    @required this.capitalizedName,
+    @required this.initialLevel,
+    @required this.totalLevels,
     this.measureUnit,
-    this.initialLevel,
-    this.totalLevels,
     int levelMultiplier = 1,
     bool enablePlusSignalOnFormatting = false,
   })
