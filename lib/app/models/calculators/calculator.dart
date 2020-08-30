@@ -1,57 +1,108 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-import '../generation.dart';
-import '../resource.dart';
+import '../converter.dart';
+import '../graph/spanning_tree.dart';
+import '../parameters/generation.dart';
+import '../resources/resource.dart';
+import 'modifier.dart';
 
-typedef CalculatorModifier = num Function(num value, Calculator calculator);
-
-enum CalculatorModifierTarget {
-  remainingQuantity,
-  remainingProduction,
-}
-
-abstract class Calculator {
+class Calculator {
   final Resource resource;
-  final Generation generation;
-  final int _conversionCost;
-  final Map<CalculatorModifierTarget, List<CalculatorModifier>> modifiers;
+  final int conversionCost;
+  final int _bonus;
+  final Converter _converter;
+  final SpanningTree<Resource, CalculatorModifier> _resourceTree;
+  final SpanningTree<Resource, CalculatorModifier> _childrenResourceTree;
 
   Calculator({
     @required this.resource,
-    @required this.generation,
-    @required int conversionCost,
-    this.modifiers = const {},
+    @required Converter converter,
+    @required SpanningTree<Resource, CalculatorModifier> resourceTree,
   })
-    : _conversionCost = conversionCost;
+    : _converter = converter
+    , _resourceTree = resourceTree
+    , _childrenResourceTree = resourceTree.generateChildrenSubtreeFrom(resource)
+    , _bonus = _calculateBonus(resourceTree: resourceTree, resource: resource)
+    , conversionCost = _calculateConversionCost(
+      resourceTree: resourceTree,
+      resource: resource,
+      initialCost: converter.cost.toDouble(),
+    );
 
-  int get conversionCost => _conversionCost;
+  String get targetName => _converter.to.capitalizedName;
 
-  String get conversionTargetCapitalizedName;
+  bool get _shouldSkipQuantity {
+    final shouldSkipFromModifiers = _childrenResourceTree.tree.any(
+      (element) => element.additionalInfo?.shouldSkipQuantity() ?? false
+    );
 
-  int get remainingQuantity;
+    return _converter.to.isLastLevel || shouldSkipFromModifiers;
+  }
 
-  int get remainingProduction {
-    if (generation.remainingLevels == 0) return -resource.production;
-    if (remainingQuantity <= 0) return -resource.production;
+  int get missingQuantity {
+    if (_shouldSkipQuantity) return -resource.quantity;
+
+    final necessaryQuantity = _converter.to.remainingLevels * _converter.cost;
+    final equivalentQuantity = _resourceTree.tree
+      .reversed
+      .fold<int>(0, (previousValue, element) {
+        final quantity = (element.additionalInfo?.shouldSkipQuantity() ?? false)
+          ? 0
+          : element.vertex.quantity;
+
+        return previousValue * (element.weightToParent ?? 1) + quantity;
+      });
+
+    return ((necessaryQuantity - equivalentQuantity) / _bonus).ceil();
+  }
+
+  bool get _shouldSkipProduction {
+    final shouldSkipFromModifiers = _childrenResourceTree.tree.any(
+      (element) => element.additionalInfo?.shouldSkipProduction() ?? false
+    );
 
     return
-      applyModifiersFor(
-        CalculatorModifierTarget.remainingProduction,
-        remainingQuantity / generation.remainingLevels - resource.production,
-      )
+      generation.isLastLevel
+      || missingQuantity <= 0
+      || shouldSkipFromModifiers;
+  }
+
+  int get missingProduction {
+    if (_shouldSkipProduction) return -resource.production;
+
+    return
+      (missingQuantity / generation.remainingLevels - resource.production)
       .ceil();
   }
+}
 
-  num applyModifiersFor(CalculatorModifierTarget target, num initialValue) {
-    final modifiersForTarget = modifiers[target];
+int _calculateBonus({
+  @required SpanningTree<Resource, CalculatorModifier> resourceTree,
+  @required Resource resource,
+}) {
+  int bonus = 1;
 
-    if (modifiersForTarget == null || modifiersForTarget.isEmpty) {
-      return initialValue;
-    }
+  for (final treeElement in resourceTree.tree) {
+    if (treeElement.vertex == resource) return bonus;
 
-    return modifiersForTarget.fold(
-      initialValue,
-      (previousValue, element) => element(previousValue, this),
-    );
+    bonus *= treeElement.weightToParent;
   }
+
+  return bonus;
+}
+
+int _calculateConversionCost({
+  @required SpanningTree<Resource, CalculatorModifier> resourceTree,
+  @required Resource resource,
+  @required double initialCost,
+}) {
+  double cost = initialCost;
+
+  for (final treeElement in resourceTree.tree) {
+    if (treeElement.vertex == resource) return cost.ceil();
+
+    cost /= treeElement.weightToParent;
+  }
+
+  return cost.ceil();
 }

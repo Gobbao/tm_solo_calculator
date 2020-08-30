@@ -17,13 +17,13 @@ class CalculatorTable extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Text(
-          '+${calculator.remainingQuantity.abs()}',
-          style: calculator.remainingQuantity < 0 ? style : null,
+          '+${calculator.missingQuantity.abs()}',
+          style: calculator.missingQuantity < 0 ? style : null,
         ),
         Text(' ('),
         Text(
-          '+${calculator.remainingProduction.abs()}',
-          style: calculator.remainingProduction < 0 ? style : null,
+          '+${calculator.missingProduction.abs()}',
+          style: calculator.missingProduction < 0 ? style : null,
         ),
         Text(')'),
       ],
@@ -56,7 +56,7 @@ class CalculatorTable extends StatelessWidget {
           .map((calculator) => TableRow(
             children: <Widget>[
               DecoratedTableCell(
-                child: Text(calculator.conversionTargetCapitalizedName)
+                child: Text(calculator.targetName)
               ),
               DecoratedTableCell(
                 isNumeric: true,

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../app_state.dart';
-import '../models/resource.dart';
+import '../models/resources/resource.dart';
 import 'resource_icon.dart';
 
 class ResourceInput extends StatefulWidget {
@@ -81,7 +81,7 @@ class _ResourceInputState extends State<ResourceInput> {
       onTap: _selectAllText,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
-        WhitelistingTextInputFormatter(RegExp(r'[0-9-]')),
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
       ],
       decoration: InputDecoration(
         icon: ResourceIcon(

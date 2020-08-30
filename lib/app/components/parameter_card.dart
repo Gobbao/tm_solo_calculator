@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/parameter.dart';
+import '../models/parameters/parameter.dart';
 import 'slider_button.dart';
 
 class ParameterCard extends StatefulWidget {
