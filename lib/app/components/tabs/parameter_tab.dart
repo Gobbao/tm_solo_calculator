@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../app_state.dart';
-import '../components/parameter_card.dart';
+import '../../app_state.dart';
+import '../parameter_card.dart';
 
 class ParameterTab extends StatelessWidget {
   @override

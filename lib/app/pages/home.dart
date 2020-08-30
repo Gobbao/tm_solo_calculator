@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tm_solo_calculator/app/tabs/parameter_tab.dart';
-import 'package:tm_solo_calculator/app/tabs/resource_tab.dart';
+
+import '../components/tabs/parameter_tab.dart';
+import '../components/tabs/resource_tab.dart';
 
 class HomePage extends StatelessWidget {
   @override
