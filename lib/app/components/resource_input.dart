@@ -81,7 +81,7 @@ class _ResourceInputState extends State<ResourceInput> {
       onTap: _selectAllText,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
-        WhitelistingTextInputFormatter(RegExp(r'[0-9-]')),
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
       ],
       decoration: InputDecoration(
         icon: ResourceIcon(
