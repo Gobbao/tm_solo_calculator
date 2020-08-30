@@ -14,6 +14,7 @@ class SpanningTreeElementMatcher extends CustomMatcher {
       'parent': actualAs.parent,
       'cost': actualAs.cost,
       'weightToParent': actualAs.weightToParent,
+      'additionalInfo': actualAs.additionalInfo,
     };
   }
 }

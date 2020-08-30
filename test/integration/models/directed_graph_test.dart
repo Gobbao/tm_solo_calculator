@@ -6,13 +6,13 @@ import '../../matchers/spanning_tree_element.dart';
 
 void main() {
   group('Directed Graph', () {
-    final graph = DirectedGraph<String>();
+    final graph = DirectedGraph<String, String>();
 
     test('Should add edge', () {
-      final edgeAToB = Edge('A', 'B', 2);
-      final edgeAToC = Edge('A', 'C', 3);
-      final edgeCToB = Edge('C', 'B', 1);
-      final edgeBToD = Edge('B', 'D', 1);
+      final edgeAToB = Edge('A', 'B', 2, 'ab');
+      final edgeAToC = Edge('A', 'C', 3, 'ac');
+      final edgeCToB = Edge('C', 'B', 1, 'cb');
+      final edgeBToD = Edge('B', 'D', 1, 'bd');
 
       graph
         ..addEdge(edgeAToB)
@@ -41,24 +41,28 @@ void main() {
             'parent': isNull,
             'cost': isZero,
             'weightToParent': isNull,
+            'additionalInfo': equals('ac'),
           })),
           SpanningTreeElementMatcher(equals({
             'vertex': equals('B'),
             'parent': equals('C'),
             'cost': equals(4),
             'weightToParent': equals(1),
+            'additionalInfo': equals('bd'),
           })),
           SpanningTreeElementMatcher(equals({
             'vertex': equals('C'),
             'parent': equals('A'),
             'cost': equals(3),
             'weightToParent': equals(3),
+            'additionalInfo': equals('cb'),
           })),
           SpanningTreeElementMatcher(equals({
             'vertex': equals('D'),
             'parent': equals('B'),
             'cost': equals(5),
             'weightToParent': equals(1),
+            'additionalInfo': isNull,
           })),
         ]),
       );

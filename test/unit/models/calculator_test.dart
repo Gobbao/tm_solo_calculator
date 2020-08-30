@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tm_solo_calculator/app/models/calculators/calculator.dart';
+import 'package:tm_solo_calculator/app/models/calculators/modifier.dart';
 import 'package:tm_solo_calculator/app/models/converter.dart';
+import 'package:tm_solo_calculator/app/models/graph/spanning_tree.dart';
 import 'package:tm_solo_calculator/app/models/graph/spanning_tree_element.dart';
 import 'package:tm_solo_calculator/app/models/parameters/generation.dart';
 import 'package:tm_solo_calculator/app/models/parameters/parameter.dart';
@@ -17,33 +19,46 @@ void main() {
       totalLevels: 5,
     );
 
-    final converter = Converter(from: resourceA, to: parameter, cost: 8);
+    final converter = Converter(from: resourceB, to: parameter, cost: 8);
 
-    final tree = List<SpanningTreeElement<Resource>>.from([
-      SpanningTreeElement(
-        vertex: resourceB,
-        parent: resourceA,
-        cost: 3,
-        weightToParent: 3,
-      ),
-      SpanningTreeElement(
-        vertex: resourceA,
-        parent: null,
-        cost: 0,
-        weightToParent: null,
-      ),
-    ]);
+    final levelForSkipQuantity = generation.finalLevel - 1;
+    final levelForSkipProduction = generation.finalLevel - 2;
+    final resourceTree = SpanningTree<Resource, CalculatorModifier>.from(
+      tree: List.from([
+        SpanningTreeElement(
+          vertex: resourceB,
+          parent: resourceA,
+          cost: 3,
+          weightToParent: 3,
+          additionalInfo: null,
+        ),
+        SpanningTreeElement(
+          vertex: resourceA,
+          parent: null,
+          cost: 0,
+          weightToParent: null,
+          additionalInfo: CalculatorModifier(
+            shouldSkipQuantity: () => (
+              generation.currentLevel == levelForSkipQuantity
+            ),
+            shouldSkipProduction: () => (
+              generation.currentLevel == levelForSkipProduction
+            ),
+          ),
+        ),
+      ]),
+    );
 
     final calculatorA = Calculator(
       resource: resourceA,
       converter: converter,
-      resourceTree: tree,
+      resourceTree: resourceTree,
     );
 
     final calculatorB = Calculator(
       resource: resourceB,
       converter: converter,
-      resourceTree: tree,
+      resourceTree: resourceTree,
     );
 
     tearDown(() {
@@ -154,6 +169,35 @@ void main() {
 
       expect(calculatorB.missingQuantity, equals(-9));
       expect(calculatorB.missingProduction, equals(-3));
+    });
+
+    group('Modifier', () {
+      setUp(() {
+        resourceA.quantity = 4;
+        resourceA.production = 2;
+        resourceB.quantity = 9;
+        resourceB.production = 3;
+      });
+
+      test('Should return negative production when shouldSkipProduction returns true', () {
+        generation.currentLevel = levelForSkipProduction;
+
+        expect(calculatorA.missingQuantity, equals(7));
+        expect(calculatorA.missingProduction, equals(-2));
+
+        expect(calculatorB.missingQuantity, equals(19));
+        expect(calculatorB.missingProduction, equals(7));
+      });
+
+      test('Should return negative values when shouldSkipQuantity returns true', () {
+        generation.currentLevel = levelForSkipQuantity;
+
+        expect(calculatorA.missingQuantity, equals(-4));
+        expect(calculatorA.missingProduction, equals(-2));
+
+        expect(calculatorB.missingQuantity, equals(31));
+        expect(calculatorB.missingProduction, equals(28));
+      });
     });
   });
 }

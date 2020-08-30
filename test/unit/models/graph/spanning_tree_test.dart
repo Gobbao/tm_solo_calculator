@@ -21,6 +21,11 @@ void main() {
         'B': 'A',
         'C': 'B',
       },
+      additionalInfos: {
+        'A': null,
+        'B': 'ab',
+        'C': 'bc',
+      }
     );
 
     test('Should generate spanning tree correctly', () {
@@ -35,18 +40,21 @@ void main() {
             'parent': isNull,
             'cost': isZero,
             'weightToParent': isNull,
+            'additionalInfo': isNull,
           })),
           SpanningTreeElementMatcher(equals({
             'vertex': equals('B'),
             'parent': equals('A'),
             'cost': equals(4),
             'weightToParent': equals(4),
+            'additionalInfo': equals('ab'),
           })),
           SpanningTreeElementMatcher(equals({
             'vertex': equals('C'),
             'parent': equals('B'),
             'cost': equals(12),
             'weightToParent': equals(8),
+            'additionalInfo': equals('bc'),
           })),
         ]),
       );
@@ -55,21 +63,48 @@ void main() {
     test('Should generate subtree correctly', () {
       final subtree = spanningTree.generateSubtreeFrom('B');
 
-      expect(subtree, hasLength(2));
+      expect(subtree.tree, hasLength(2));
       expect(
-        subtree,
+        subtree.tree,
         containsAllInOrder([
           SpanningTreeElementMatcher(equals({
             'vertex': equals('B'),
             'parent': equals('A'),
             'cost': equals(4),
             'weightToParent': equals(4),
+            'additionalInfo': equals('ab'),
           })),
           SpanningTreeElementMatcher(equals({
             'vertex': equals('A'),
             'parent': isNull,
             'cost': isZero,
             'weightToParent': isNull,
+            'additionalInfo': isNull,
+          })),
+        ]),
+      );
+    });
+
+    test('Should generate children subtree correctly', () {
+      final subtree = spanningTree.generateChildrenSubtreeFrom('B');
+
+      expect(subtree.tree, hasLength(2));
+      expect(
+        subtree.tree,
+        containsAllInOrder([
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('C'),
+            'parent': equals('B'),
+            'cost': equals(12),
+            'weightToParent': equals(8),
+            'additionalInfo': equals('bc'),
+          })),
+          SpanningTreeElementMatcher(equals({
+            'vertex': equals('B'),
+            'parent': equals('A'),
+            'cost': equals(4),
+            'weightToParent': equals(4),
+            'additionalInfo': equals('ab'),
           })),
         ]),
       );

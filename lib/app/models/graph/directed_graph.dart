@@ -1,11 +1,13 @@
+import 'package:flutter/foundation.dart';
+
 import 'depth_first_search.dart';
 import 'edge.dart';
 import 'spanning_tree.dart';
 
-class DirectedGraph<T> {
-  final Map<T, List<Edge<T>>> adjacencyList = {};
+class DirectedGraph<T, S> {
+  final Map<T, List<Edge<T, S>>> adjacencyList = {};
 
-  void addEdge(Edge<T> edge) {
+  void addEdge(Edge<T, S> edge) {
     if (!adjacencyList.containsKey(edge.destination)) {
       adjacencyList[edge.destination] = [];
     }
@@ -19,7 +21,7 @@ class DirectedGraph<T> {
     adjacencyList[edge.source] = [edge];
   }
 
-  SpanningTree<T> findLongestPaths() {
+  SpanningTree<T, S> findLongestPaths() {
     final parents = Map<T, T>();
     final costToGetTo = Map<T, double>();
     final dfsSpanningTree = DepthFirstSearch(adjacencyList)
@@ -48,22 +50,39 @@ class DirectedGraph<T> {
       });
     });
 
-    return SpanningTree<T>(
-      costs: costToGetTo.map((key, value) => MapEntry(key, value.toInt() * -1)),
+    return _buildSpanningTree(costToGetTo: costToGetTo, parents: parents);
+  }
+
+  SpanningTree<T, S> _buildSpanningTree({
+    @required Map<T, double> costToGetTo,
+    @required Map<T, T> parents,
+  }) {
+    final costs = Map<T, int>();
+    final weights = Map<T, int>();
+    final additionalInfos = Map<T, S>();
+    final children = parents.map((key, value) => MapEntry(value, key));
+
+    for (final entry in costToGetTo.entries) {
+      final key = entry.key;
+      final parent = parents[key];
+      final child = children[key];
+      final parentEdge = (parent != null)
+        ? adjacencyList[parent].firstWhere((e) => e.destination == key)
+        : null;
+      final childEdge = (child != null)
+        ? adjacencyList[key].firstWhere((e) => e.destination == child)
+        : null;
+
+      costs.putIfAbsent(key, () => entry.value.toInt() * -1);
+      weights.putIfAbsent(key, () => parentEdge?.weight);
+      additionalInfos.putIfAbsent(key, () => childEdge?.additionalInfo);
+    }
+
+    return SpanningTree<T, S>(
+      costs: costs,
       parents: parents,
-      weights: costToGetTo.map<T, int>((key, value) {
-        final parent = parents[key];
-
-        if (parent == null) {
-          return MapEntry(key, null);
-        }
-
-        final edge = adjacencyList[parent].firstWhere(
-          (element) => element.destination == key,
-        );
-
-        return MapEntry(key, edge.weight);
-      }),
+      weights: weights,
+      additionalInfos: additionalInfos,
     );
   }
 }

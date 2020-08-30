@@ -2,8 +2,8 @@ import 'dart:collection';
 
 import 'edge.dart';
 
-class DepthFirstSearch<T> {
-  final Map<T, List<Edge<T>>> _adjacencyList;
+class DepthFirstSearch<T, S> {
+  final Map<T, List<Edge<T, S>>> _adjacencyList;
   final _visited = HashSet<T>();
   final _stack = <T>[];
 
